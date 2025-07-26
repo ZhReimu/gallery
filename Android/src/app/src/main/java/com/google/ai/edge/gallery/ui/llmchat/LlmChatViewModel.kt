@@ -39,8 +39,11 @@ import com.google.ai.edge.gallery.ui.common.chat.Stat
 import com.google.ai.edge.gallery.ui.modelmanager.ModelManagerViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 private const val TAG = "AGLlmChatViewModel"
@@ -281,31 +284,41 @@ class LlmServerViewModel @Inject constructor() : LlmChatViewModelBase(curTask = 
         input: String,
         images: List<Bitmap>
     ): String {
-//        viewModelScope.launch(Dispatchers.Default) {
-//            // Wait for instance to be initialized.
-//            while (model.instance == null) {
-//                delay(100)
-//            }
-//            delay(500)
-//            try {
-//                LlmChatModelHelper.runInference(
-//                    model = model,
-//                    input = input,
-//                    images = images,
-//                    audioClips = listOf(),
-//                    resultListener = { partialResult, done ->
-//
-//                    },
-//                    cleanUpListener = {
-//                        setInProgress(false)
-//                        setPreparing(false)
-//                    },
-//                )
-//            } catch (e: Exception) {
-//                Log.e(TAG, "Error occurred while running inference", e)
-//                return@launch e.message
-//            }
-//        }
-      return "succeed"
+        val async = viewModelScope.async(Dispatchers.Default) {
+            // Wait for instance to be initialized.
+            while (model.instance == null) {
+                delay(100)
+            }
+            delay(500)
+            try {
+                val sb = StringBuilder()
+                val isDone = AtomicBoolean(false)
+                LlmChatModelHelper.runInference(
+                    model = model,
+                    input = input,
+                    images = images,
+                    audioClips = listOf(),
+                    resultListener = { partialResult, done ->
+                        if (done) {
+                            isDone.set(true)
+                        } else {
+                            sb.append(partialResult)
+                        }
+                    },
+                    cleanUpListener = {
+                        setInProgress(false)
+                        setPreparing(false)
+                    },
+                )
+                while (!isDone.get()) {
+                    delay(100)
+                }
+                return@async sb.toString()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error occurred while running inference", e)
+                return@async e.message
+            }
+        }
+        return runBlocking { async.await() as String }
     }
 }
