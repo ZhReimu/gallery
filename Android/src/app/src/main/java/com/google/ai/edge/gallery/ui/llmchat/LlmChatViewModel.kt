@@ -25,6 +25,7 @@ import com.google.ai.edge.gallery.data.Model
 import com.google.ai.edge.gallery.data.TASK_LLM_ASK_AUDIO
 import com.google.ai.edge.gallery.data.TASK_LLM_ASK_IMAGE
 import com.google.ai.edge.gallery.data.TASK_LLM_CHAT
+import com.google.ai.edge.gallery.data.TASK_LLM_SERVER
 import com.google.ai.edge.gallery.data.Task
 import com.google.ai.edge.gallery.ui.common.chat.ChatMessageAudioClip
 import com.google.ai.edge.gallery.ui.common.chat.ChatMessageBenchmarkLlmResult
@@ -271,3 +272,7 @@ class LlmAskImageViewModel @Inject constructor() :
 @HiltViewModel
 class LlmAskAudioViewModel @Inject constructor() :
   LlmChatViewModelBase(curTask = TASK_LLM_ASK_AUDIO)
+
+@HiltViewModel
+class LlmServerViewModel @Inject constructor() :
+  LlmChatViewModelBase(curTask = TASK_LLM_SERVER)

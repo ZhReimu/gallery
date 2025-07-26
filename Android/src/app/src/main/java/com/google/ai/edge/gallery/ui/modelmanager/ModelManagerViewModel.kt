@@ -40,6 +40,7 @@ import com.google.ai.edge.gallery.data.TASK_LLM_ASK_AUDIO
 import com.google.ai.edge.gallery.data.TASK_LLM_ASK_IMAGE
 import com.google.ai.edge.gallery.data.TASK_LLM_CHAT
 import com.google.ai.edge.gallery.data.TASK_LLM_PROMPT_LAB
+import com.google.ai.edge.gallery.data.TASK_LLM_SERVER
 import com.google.ai.edge.gallery.data.Task
 import com.google.ai.edge.gallery.data.TaskType
 import com.google.ai.edge.gallery.data.createLlmChatConfigs
@@ -290,6 +291,7 @@ constructor(
         TaskType.LLM_CHAT,
         TaskType.LLM_ASK_IMAGE,
         TaskType.LLM_ASK_AUDIO,
+        TaskType.LLM_SERVER,
         TaskType.LLM_PROMPT_LAB ->
           LlmChatModelHelper.initialize(context = context, model = model, onDone = onDone)
 
@@ -307,6 +309,7 @@ constructor(
         TaskType.LLM_CHAT,
         TaskType.LLM_PROMPT_LAB,
         TaskType.LLM_ASK_IMAGE,
+        TaskType.LLM_SERVER,
         TaskType.LLM_ASK_AUDIO -> LlmChatModelHelper.cleanUp(model = model)
 
         TaskType.TEST_TASK_1 -> {}
@@ -685,6 +688,9 @@ constructor(
           }
           if (allowedModel.taskTypes.contains(TASK_LLM_ASK_AUDIO.type.id)) {
             TASK_LLM_ASK_AUDIO.models.add(model)
+          }
+          if (allowedModel.taskTypes.contains(TASK_LLM_SERVER.type.id)) {
+            TASK_LLM_SERVER.models.add(model)
           }
         }
 

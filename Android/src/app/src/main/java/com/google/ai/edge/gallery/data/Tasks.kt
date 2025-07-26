@@ -35,6 +35,7 @@ enum class TaskType(val label: String, val id: String) {
   LLM_ASK_AUDIO(label = "Audio Scribe", id = "llm_ask_audio"),
   TEST_TASK_1(label = "Test task 1", id = "test_task_1"),
   TEST_TASK_2(label = "Test task 2", id = "test_task_2"),
+  LLM_SERVER(label = "LLM Server", id = "llm_server"),
 }
 
 /** Data class for a task listed in home screen. */
@@ -121,9 +122,21 @@ val TASK_LLM_ASK_AUDIO =
     textInputPlaceHolderRes = R.string.text_input_placeholder_llm_chat,
   )
 
+val TASK_LLM_SERVER =
+  Task(
+    type = TaskType.LLM_SERVER,
+    icon = Icons.Outlined.Forum,
+    models = mutableListOf(),
+    description = "启动 API 服务器",
+    docUrl = "https://ai.google.dev/edge/mediapipe/solutions/genai/llm_inference/android",
+    sourceCodeUrl =
+      "https://github.com/google-ai-edge/gallery/blob/main/Android/src/app/src/main/java/com/google/ai/edge/gallery/ui/llmchat/LlmChatModelHelper.kt",
+    textInputPlaceHolderRes = R.string.text_input_placeholder_llm_chat,
+  )
+
 /** All tasks. */
 val TASKS: List<Task> =
-  listOf(TASK_LLM_ASK_IMAGE, TASK_LLM_ASK_AUDIO, TASK_LLM_PROMPT_LAB, TASK_LLM_CHAT)
+  listOf(TASK_LLM_ASK_IMAGE, TASK_LLM_ASK_AUDIO, TASK_LLM_PROMPT_LAB, TASK_LLM_CHAT, TASK_LLM_SERVER)
 
 fun getModelByName(name: String): Model? {
   for (task in TASKS) {

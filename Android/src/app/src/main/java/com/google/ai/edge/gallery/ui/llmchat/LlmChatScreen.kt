@@ -41,6 +41,10 @@ object LlmAskAudioDestination {
   val route = "LlmAskAudioRoute"
 }
 
+object LlmServerDestination {
+  val route = "LlmServerRoute"
+}
+
 @Composable
 fun LlmChatScreen(
   modelManagerViewModel: ModelManagerViewModel,

@@ -103,11 +103,10 @@ fun ChatView(
   var selectedImage by remember { mutableStateOf<Bitmap?>(null) }
   var showImageViewer by remember { mutableStateOf(false) }
 
-  val pagerState =
-    rememberPagerState(
-      initialPage = task.models.indexOf(selectedModel),
-      pageCount = { task.models.size },
-    )
+  val pagerState = rememberPagerState(
+    initialPage = task.models.indexOf(selectedModel),
+    pageCount = { task.models.size },
+  )
   val context = LocalContext.current
   val scope = rememberCoroutineScope()
   var navigatingUp by remember { mutableStateOf(false) }
