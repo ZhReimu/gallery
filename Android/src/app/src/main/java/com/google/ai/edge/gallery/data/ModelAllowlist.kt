@@ -43,7 +43,8 @@ data class AllowedModel(
 ) {
   fun toModel(): Model {
     // Construct HF download url.
-    val downloadUrl = "https://huggingface.co/$modelId/resolve/main/$modelFile?download=true"
+    // val downloadUrl = "https://huggingface.co/$modelId/resolve/main/$modelFile?download=true"
+    val downloadUrl = "https://www.modelscope.cn/models/$modelId/resolve/master/$modelFile"
 
     // Config.
     val isLlmModel =

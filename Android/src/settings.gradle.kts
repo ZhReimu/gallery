@@ -16,6 +16,25 @@
 
 pluginManagement {
   repositories {
+    maven {
+      name = "阿里云 Public 镜像"
+      setUrl("https://maven.aliyun.com/repository/public")
+    }
+    maven {
+      name = "jitpack 仓库"
+      setUrl("https://jitpack.io")
+    }
+    maven {
+      name = "阿里云 Google 镜像"
+      setUrl("https://maven.aliyun.com/repository/google")
+    }
+    google {
+      content {
+        includeGroupByRegex("com\\.android.*")
+        includeGroupByRegex("com\\.google.*")
+        includeGroupByRegex("androidx.*")
+      }
+    }
     google {
       content {
         includeGroupByRegex("com\\.android.*")
@@ -38,6 +57,18 @@ pluginManagement {
 dependencyResolutionManagement {
   repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
   repositories {
+    maven {
+      name = "阿里云 Public 镜像"
+      setUrl("https://maven.aliyun.com/repository/public")
+    }
+    maven {
+      name = "jitpack 仓库"
+      setUrl("https://jitpack.io")
+    }
+    maven {
+      name = "阿里云 Google 镜像"
+      setUrl("https://maven.aliyun.com/repository/google")
+    }
     //        mavenLocal()
     google()
     mavenCentral()

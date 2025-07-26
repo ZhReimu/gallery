@@ -23,7 +23,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.ai.edge.gallery.AppLifecycleProvider
-import com.google.ai.edge.gallery.common.getJsonResponse
+import com.google.ai.edge.gallery.common.XUtils.loadModels
 import com.google.ai.edge.gallery.data.AGWorkInfo
 import com.google.ai.edge.gallery.data.Accelerator
 import com.google.ai.edge.gallery.data.Config
@@ -54,10 +54,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.io.File
-import java.net.HttpURLConnection
-import java.net.URL
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -70,11 +66,14 @@ import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import net.openid.appauth.ResponseTypeValues
+import java.io.File
+import java.net.HttpURLConnection
+import java.net.URL
+import javax.inject.Inject
 
 private const val TAG = "AGModelManagerViewModel"
 private const val TEXT_INPUT_HISTORY_MAX_SIZE = 50
-private const val MODEL_ALLOWLIST_URL =
-  "https://raw.githubusercontent.com/google-ai-edge/gallery/refs/heads/main/model_allowlist.json"
+
 private const val MODEL_ALLOWLIST_FILENAME = "model_allowlist.json"
 
 data class ModelInitializationStatus(
@@ -644,7 +643,7 @@ constructor(
       try {
         // Load model allowlist json.
         Log.d(TAG, "Loading model allowlist from internet...")
-        val data = getJsonResponse<ModelAllowlist>(url = MODEL_ALLOWLIST_URL)
+        val data = loadModels<ModelAllowlist>(context)
         var modelAllowlist: ModelAllowlist? = data?.jsonObj
 
         if (modelAllowlist == null) {
