@@ -27,9 +27,12 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewModelScope
 import com.google.ai.edge.gallery.data.Model
 import com.google.ai.edge.gallery.data.ModelDownloadStatusType
 import com.google.ai.edge.gallery.data.Task
+import com.google.ai.edge.gallery.server.ApiServer
+import com.google.ai.edge.gallery.server.Content
 import com.google.ai.edge.gallery.ui.common.ModelPageAppBar
 import com.google.ai.edge.gallery.ui.modelmanager.ModelManagerViewModel
 import kotlinx.coroutines.Dispatchers
@@ -196,6 +199,19 @@ object LlmServer {
             context: Context
         ): Pair<String, String> {
             isServerStarted = !isServerStarted
+            if (isServerStarted) {
+                ApiServer.startServer(viewModel.viewModelScope) { model, messages ->
+                    val prompt = messages.flatMap { it.content }
+                        .find { it is Content.TextContent } as Content.TextContent
+                    val image = messages.flatMap { it.content }
+                        .find { it is Content.ImageUrlContent } as Content.ImageUrlContent
+                    return@startServer viewModel.generateResponse(
+                        selectedModel,
+                        prompt.text,
+                        listOf()
+                    )
+                }
+            }
             Toast.makeText(context, "启动服务器", Toast.LENGTH_SHORT).show()
             return "服务器启动成功, 正在监听 http://0.0.0.0:8080" to (if (isServerStarted) "停止服务器" else "启动服务器")
         }

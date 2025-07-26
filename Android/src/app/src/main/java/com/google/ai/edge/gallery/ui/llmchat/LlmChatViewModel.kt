@@ -38,10 +38,10 @@ import com.google.ai.edge.gallery.ui.common.chat.ChatViewModel
 import com.google.ai.edge.gallery.ui.common.chat.Stat
 import com.google.ai.edge.gallery.ui.modelmanager.ModelManagerViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private const val TAG = "AGLlmChatViewModel"
 private val STATS =
@@ -274,5 +274,38 @@ class LlmAskAudioViewModel @Inject constructor() :
   LlmChatViewModelBase(curTask = TASK_LLM_ASK_AUDIO)
 
 @HiltViewModel
-class LlmServerViewModel @Inject constructor() :
-  LlmChatViewModelBase(curTask = TASK_LLM_SERVER)
+class LlmServerViewModel @Inject constructor() : LlmChatViewModelBase(curTask = TASK_LLM_SERVER) {
+
+    fun generateResponse(
+        model: Model,
+        input: String,
+        images: List<Bitmap>
+    ): String {
+//        viewModelScope.launch(Dispatchers.Default) {
+//            // Wait for instance to be initialized.
+//            while (model.instance == null) {
+//                delay(100)
+//            }
+//            delay(500)
+//            try {
+//                LlmChatModelHelper.runInference(
+//                    model = model,
+//                    input = input,
+//                    images = images,
+//                    audioClips = listOf(),
+//                    resultListener = { partialResult, done ->
+//
+//                    },
+//                    cleanUpListener = {
+//                        setInProgress(false)
+//                        setPreparing(false)
+//                    },
+//                )
+//            } catch (e: Exception) {
+//                Log.e(TAG, "Error occurred while running inference", e)
+//                return@launch e.message
+//            }
+//        }
+      return "succeed"
+    }
+}
